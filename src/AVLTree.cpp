@@ -1,6 +1,6 @@
 #include "AVLTree.h"
 
-// get height of tree
+// Get height of tree
 int height(Node *N)
 {
     if (N == NULL)
@@ -8,25 +8,25 @@ int height(Node *N)
     return N->height;
 }
 
-// get maximum of two integers
+// Get maximum of two integers
 int max(int a, int b)
 {
     return (a > b)? a : b;
 }
 
-// create new node
+// Create new node
 Node* newNode(int key)
 {
     Node* node = new Node();
     node->key = key;
     node->left = NULL;
     node->right = NULL;
-    node->height = 1; // new node is initially added at leaf
+    node->height = 1;
     node->balance = 0;
     return(node);
 }
 
-// Get Balance factor of node N
+// Get Balance factor of node
 int getBalance(Node* node)
 {
     if (node == NULL)
@@ -35,8 +35,8 @@ int getBalance(Node* node)
 }
 
 // Recursive function to insert a key in subtree rooted
-// with node and returns the new root of the subtree.
-Node* insert(Node* node, int key, ofstream& logFile)
+// with node (returns new root of the subtree)
+Node* insertInBinSearchTree(Node* node, int key, ofstream& logFile)
 {
     // if node isn't part of the tree yet
     if (node == NULL) {
@@ -44,9 +44,9 @@ Node* insert(Node* node, int key, ofstream& logFile)
     }
 
     if (key > node->key) {
-        node->left = insert(node->left, key, logFile);
+        node->left = insertInBinSearchTree(node->left, key, logFile);
     } else if (key < node->key) {
-        node->right = insert(node->right, key, logFile);
+        node->right = insertInBinSearchTree(node->right, key, logFile);
     } else {
         return node;
     }
@@ -66,83 +66,92 @@ bool isAVLTree(Node* root)
     return (balance <= 1 && balance >= -1) && isAVLTree(root->left) && isAVLTree(root->right);
 }
 
-// Function to perform inorder traversal and compute statistics
-void inorderStats(Node* root, ofstream& logFile, int& minBalance, int& maxBalance, int& totalBalance, int& nodeCount) {
-    if (root != NULL) {
-        inorderStats(root->left, logFile, minBalance, maxBalance, totalBalance, nodeCount);
-        int balance = getBalance(root);
-        logFile << "bal(" << root->key << ") = " << balance << endl;
-        minBalance = min(minBalance, balance);
-        maxBalance = max(maxBalance, balance);
-        totalBalance += balance;
-        nodeCount++;
-        inorderStats(root->right, logFile, minBalance, maxBalance, totalBalance, nodeCount);
-    }
-}
-
-void reversePreorderTraversal(Node* node, ofstream& logFile, int smallestKey, int biggestKey) {
+void reversePreorderTraversal(Node* node, ofstream& logFile) {
     if (node == nullptr) {
             return;
     }
-    reversePreorderTraversal(node->left, logFile, smallestKey, biggestKey);
-    reversePreorderTraversal(node->right, logFile, smallestKey, biggestKey);
+    reversePreorderTraversal(node->left, logFile);
+    reversePreorderTraversal(node->right, logFile);
     logFile << "bal(" << node->key << ") = " << node->balance;
     if (node->balance > 1 || node->balance < -1) {
         logFile << " (AVL violation!)";
     }
     logFile << endl;
-
-    if (node->key < smallestKey) {
-        smallestKey = node->key;
-    }
-
-    if (node->key > biggestKey) {
-        biggestKey = node->key;
-    }
 }
 
-int getBiggestKey(Node* node, int& biggestKey) {
+void printStats(Node* root, ofstream& logFile)
+{
+    double average = (double)getSum(root) / countNodes(root);
+
+    std::string isAVL;
+    isAVLTree(root) ? isAVL = "yes" : isAVL = "no";
+
+    logFile << "isAVL: " << isAVL;
+    logFile << std::endl;
+
+    logFile << "min: " << getSmallestKey(root) << ", max: " << getBiggestKey(root) << ", avg: " << average;
+    logFile << std::endl;
+}
+
+int getBiggestKey(Node* node)
+{
     if (node == nullptr) {
         return INT_MIN;
     }
 
-    getBiggestKey(node->right, biggestKey);
-    getBiggestKey(node->left, biggestKey);
+    int biggestKey = node->key;
 
-    if (node->key > biggestKey) {
-        biggestKey = node->key;
+    int rightBiggest = getBiggestKey(node->right);
+    int leftBiggest = getBiggestKey(node->left);
+
+    if (rightBiggest > biggestKey) {
+        biggestKey = rightBiggest;
+    }
+
+    if (leftBiggest > biggestKey) {
+        biggestKey = leftBiggest;
     }
 
     return biggestKey;
 }
 
-int getSmallestKey(Node* node, int& smallestKey) {
+int getSmallestKey(Node* node) {
     if (node == nullptr) {
-        return INT_MIN;
+        return INT_MAX;
     }
 
-    getSmallestKey(node->right, smallestKey);
-    getSmallestKey(node->left, smallestKey);
+    int smallestKey = node->key;
 
-    if (node->key < smallestKey) {
-        smallestKey = node->key;
+    int rightSmallest = getSmallestKey(node->right);
+    int leftSmallest = getSmallestKey(node->left);
+
+    if (rightSmallest < smallestKey) {
+        smallestKey = rightSmallest;
+    }
+
+    if (leftSmallest < smallestKey) {
+        smallestKey = leftSmallest;
     }
 
     return smallestKey;
 }
 
-void getSum(Node* node, int& sum) {
+int getSum(Node* node)
+{
     if (node == nullptr) {
-        return;
+        return 0;
     }
 
-    getSum(node->right, sum);
-    getSum(node->left, sum);
+    int sum = 0;
 
-    sum += node->key;
+    sum += getSum(node->right);
+    sum += getSum(node->left);
+
+    return sum += node->key;
 }
 
-int countNodes(Node* node) {
+int countNodes(Node* node)
+{
     if (node == nullptr) {
         return 0;
     }

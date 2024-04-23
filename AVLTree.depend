@@ -10,14 +10,20 @@
 1713854387 source:d:\bsc-informatik_fh-technikum\bif-2-ss2024\algos\programmierbeispiel2\avltree\src\avltree.cpp
 	"AVLTree.h"
 
-1713856926 source:d:\bsc-informatik_fh-technikum\bif-2-ss2024\algos\programmierbeispiel2\treecheck\main.cpp
+1713883614 source:d:\bsc-informatik_fh-technikum\bif-2-ss2024\algos\programmierbeispiel2\treecheck\main.cpp
 	"AVLTree.h"
 	<iostream>
 	<fstream>
 
-1713856664 d:\bsc-informatik_fh-technikum\bif-2-ss2024\algos\programmierbeispiel2\treecheck\include\avltree.h
+1713885029 d:\bsc-informatik_fh-technikum\bif-2-ss2024\algos\programmierbeispiel2\treecheck\include\avltree.h
 	<bits/stdc++.h>
 
-1713856710 source:d:\bsc-informatik_fh-technikum\bif-2-ss2024\algos\programmierbeispiel2\treecheck\src\avltree.cpp
+1713885000 source:d:\bsc-informatik_fh-technikum\bif-2-ss2024\algos\programmierbeispiel2\treecheck\src\avltree.cpp
 	"AVLTree.h"
+
+1713882474 source:d:\bsc-informatik_fh-technikum\bif-2-ss2024\algos\programmierbeispiel2\treecheck\src\utility.cpp
+	"Utility.h"
+
+1713882473 d:\bsc-informatik_fh-technikum\bif-2-ss2024\algos\programmierbeispiel2\treecheck\include\utility.h
+	<iostream>
 

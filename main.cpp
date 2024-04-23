@@ -2,18 +2,22 @@
 #include <iostream>
 #include <fstream>
 
-int main()
+int main(int argc, char* argv[])
 {
-    Node *root = NULL;
+    // Check if number of arguments is 2
+    if (argc != 2) {
+        std::cerr << "Usage: " << argv[0] << " Treechecker" << std::endl;
+        return 1;
+    }
+
+    // Declare root pointer and key
+    Node* root = nullptr;
     int key;
 
     // Open and check input file
-    std::string inputFileName;
-    std::cout << "Enter the name of the input file: ";
-    std::cin >> inputFileName;
-    std::ifstream inputFile(inputFileName);
+    std::ifstream inputFile(argv[1]);
     if (!inputFile) {
-        std::cerr << "Error: Unable to open file " << inputFileName << std::endl;
+        std::cerr << "Error: Unable to open file " << argv[1] << std::endl;
         return 1;
     }
 
@@ -24,33 +28,17 @@ int main()
         return 1;
     }
 
-    // Read integers from file as long as possible and insert them into binary search tree
+    // Read keys from file as long as possible and insert them into binary search tree (build tree)
     while (inputFile >> key) {
-        root = insert(root, key, logFile);
+        // Update the pointer (root) after every insertion
+        root = insertInBinSearchTree(root, key, logFile);
     }
 
-    int smallestKey = INT_MAX;
-    int biggestKey = INT_MIN;
-    int sum = 0;
-    int nodeCounter = 0;
-    std::string isAVL;
     // Traverse binary search tree
-    reversePreorderTraversal(root, logFile, smallestKey, biggestKey);
-    biggestKey = getBiggestKey(root, biggestKey);
-    smallestKey = getSmallestKey(root, smallestKey);
-    getSum(root, sum);
-    nodeCounter = countNodes(root);
-    double average = static_cast<double>(sum) / nodeCounter;
-    if (isAVLTree(root)) {
-        isAVL = "yes";
-    } else {
-        isAVL = "no";
-    }
-    logFile << "isAVL: " << isAVL;
-    logFile << std::endl;
-    logFile << "min: " << smallestKey << ", max: " << biggestKey << ", avg: " << average;
-    logFile << std::endl;
+    reversePreorderTraversal(root, logFile);
 
+    // Print stats of binary search tree
+    printStats(root, logFile);
 
     inputFile.close();
     logFile.close();

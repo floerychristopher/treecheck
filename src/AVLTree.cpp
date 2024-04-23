@@ -43,9 +43,9 @@ Node* insert(Node* node, int key, ofstream& logFile)
         return newNode(key);
     }
 
-    if (key < node->key) {
+    if (key > node->key) {
         node->left = insert(node->left, key, logFile);
-    } else if (key > node->key) {
+    } else if (key < node->key) {
         node->right = insert(node->right, key, logFile);
     } else {
         return node;
@@ -84,8 +84,8 @@ void reversePreorderTraversal(Node* node, ofstream& logFile, int smallestKey, in
     if (node == nullptr) {
             return;
     }
-    reversePreorderTraversal(node->right, logFile, smallestKey, biggestKey);
     reversePreorderTraversal(node->left, logFile, smallestKey, biggestKey);
+    reversePreorderTraversal(node->right, logFile, smallestKey, biggestKey);
     logFile << "bal(" << node->key << ") = " << node->balance;
     if (node->balance > 1 || node->balance < -1) {
         logFile << " (AVL violation!)";

@@ -31,12 +31,16 @@ int main()
 
     int smallestKey = INT_MAX;
     int biggestKey = INT_MIN;
+    int sum = 0;
+    int nodeCounter = 0;
     std::string isAVL;
     // Traverse binary search tree
     reversePreorderTraversal(root, logFile, smallestKey, biggestKey);
     biggestKey = getBiggestKey(root, biggestKey);
     smallestKey = getSmallestKey(root, smallestKey);
-    double average = static_cast<double>(smallestKey + biggestKey) / 2;
+    getSum(root, sum);
+    nodeCounter = countNodes(root);
+    double average = static_cast<double>(sum) / nodeCounter;
     if (isAVLTree(root)) {
         isAVL = "yes";
     } else {

@@ -26,5 +26,7 @@ void inorderStats(Node* root, ofstream& logFile, int& minBalance, int& maxBalanc
 void reversePreorderTraversal(Node* root, ofstream& logFile, int smallestKey, int biggestKey);
 int getBiggestKey(Node* root, int& biggestKey);
 int getSmallestKey(Node* root, int& smallestKey);
+void getSum(Node* node, int& sum);
+int countNodes(Node* node);
 
 #endif /* AVL_TREE_H */

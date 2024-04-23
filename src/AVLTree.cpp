@@ -130,3 +130,25 @@ int getSmallestKey(Node* node, int& smallestKey) {
 
     return smallestKey;
 }
+
+void getSum(Node* node, int& sum) {
+    if (node == nullptr) {
+        return;
+    }
+
+    getSum(node->right, sum);
+    getSum(node->left, sum);
+
+    sum += node->key;
+}
+
+int countNodes(Node* node) {
+    if (node == nullptr) {
+        return 0;
+    }
+
+    int leftCount = countNodes(node->left);
+    int rightCount = countNodes(node->right);
+
+    return leftCount + rightCount + 1;
+}
